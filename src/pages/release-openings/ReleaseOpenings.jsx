@@ -15,7 +15,7 @@ const ReleaseOpeningsPage = () => {
     const loading = false;
     const error = false;
 
-    const viewRole = () => navigate('/role_analytics');
+    const viewRole = () => navigate('/role-analytics');
     const createNewOpening = () => navigate('/release-opening-form');
 
     return (

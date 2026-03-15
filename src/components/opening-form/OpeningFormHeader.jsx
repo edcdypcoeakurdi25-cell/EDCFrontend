@@ -1,9 +1,10 @@
-import { ArrowLeft, Pencil } from 'lucide-react';
 import { motion } from 'framer-motion';
+import { ArrowLeft, Pencil } from 'lucide-react';
 
 export default function OpeningFormHeader({
     navigate,
     title,
+    error,
     setTitle,
     isEditingTitle,
     setIsEditingTitle,
@@ -38,7 +39,7 @@ export default function OpeningFormHeader({
 
                 <button
                     onClick={() => setIsEditingTitle(true)}
-                    className="flex items-center gap-1 bg-zinc-800 text-zinc-300 text-xs px-3 py-1 rounded-md hover:bg-zinc-700 transition cursor-pointer"
+                    className={`flex items-center gap-1 bg-zinc-800 text-zinc-300 text-xs px-3 py-1 rounded-md hover:bg-zinc-700 transition cursor-pointer ${error ? 'border-red-500' : ''}`}
                 >
                     <Pencil size={12} />
                     Edit

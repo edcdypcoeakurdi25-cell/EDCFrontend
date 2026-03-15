@@ -23,15 +23,53 @@ export default function NewOpeningForm() {
     const [errors, setErrors] = useState({});
     const [isEditingTitle, setIsEditingTitle] = useState(false);
 
+    const validateField = (name, value) => {
+        switch (name) {
+            case 'title':
+                if (!value?.trim()) return 'Title is required';
+                break;
+
+            case 'domain':
+                if (!value?.trim()) return 'Domain is required';
+                break;
+
+            case 'workType':
+                if (!value?.trim()) return 'Work type is required';
+                break;
+
+            case 'openings':
+                if (!value) return 'Number of openings is required';
+                break;
+
+            case 'preText':
+                if (!value?.trim()) return 'Pre-text is required';
+                break;
+
+            case 'about':
+                if (!value?.trim()) return 'About role is required';
+                break;
+
+            case 'skills':
+                if (!value?.trim()) return 'Skills is required';
+                break;
+
+            default:
+                return null;
+        }
+
+        return null;
+    };
+
     const validate = () => {
         const newErrors = {};
 
-        if (!openingData.title?.trim()) newErrors.title = 'Title is required';
-        if (!openingData.domain?.trim()) newErrors.domain = 'Domain is required';
-        if (!openingData.workType?.trim()) newErrors.workType = 'Work type required';
-        if (!openingData.openings) newErrors.openings = 'Number of openings required';
-        if (!openingData.about?.trim()) newErrors.about = 'About role required';
-        if (!openingData.skills?.trim()) newErrors.skills = 'Skills required';
+        Object.entries(openingData).forEach(([key, value]) => {
+            const error = validateField(key, value);
+
+            if (error) {
+                newErrors[key] = error;
+            }
+        });
 
         setErrors(newErrors);
 
@@ -45,6 +83,29 @@ export default function NewOpeningForm() {
             ...prev,
             [name]: value,
         }));
+
+        const error = validateField(name, value);
+
+        setErrors(prev => {
+            const updated = { ...prev };
+
+            if (!error) {
+                delete updated[name];
+            }
+
+            return updated;
+        });
+    };
+
+    const handleBlur = e => {
+        const { name, value } = e.target;
+
+        const error = validateField(name, value);
+
+        setErrors(prev => ({
+            ...prev,
+            ...(error ? { [name]: error } : {}),
+        }));
     };
 
     const handleTitleChange = value => {
@@ -56,7 +117,7 @@ export default function NewOpeningForm() {
 
     const handleClear = () => {
         setOpeningData({
-            title: '',
+            title: 'Opening Title',
             domain: '',
             workType: '',
             openings: '',
@@ -69,7 +130,7 @@ export default function NewOpeningForm() {
 
     const handleNext = () => {
         if (!validate()) return;
-        navigate("/create-opening/form-builder");
+        navigate('/create-opening/form-builder');
     };
 
     return (
@@ -81,6 +142,7 @@ export default function NewOpeningForm() {
                     setTitle={handleTitleChange}
                     isEditingTitle={isEditingTitle}
                     setIsEditingTitle={setIsEditingTitle}
+                    error={errors.title}
                 />
 
                 <motion.div
@@ -92,6 +154,7 @@ export default function NewOpeningForm() {
                     <OpeningFormFields
                         formData={openingData}
                         handleChange={handleChange}
+                        handleBlur={handleBlur}
                         errors={errors}
                     />
 
@@ -100,6 +163,8 @@ export default function NewOpeningForm() {
                         name="preText"
                         value={openingData.preText}
                         onChange={handleChange}
+                        handleBlur={handleBlur}
+                        error={errors.preText}
                     />
 
                     <OpeningTextarea
@@ -107,6 +172,8 @@ export default function NewOpeningForm() {
                         name="about"
                         value={openingData.about}
                         onChange={handleChange}
+                        handleBlur={handleBlur}
+                        error={errors.about}
                     />
 
                     <OpeningTextarea
@@ -114,6 +181,8 @@ export default function NewOpeningForm() {
                         name="skills"
                         value={openingData.skills}
                         onChange={handleChange}
+                        handleBlur={handleBlur}
+                        error={errors.skills}
                     />
 
                     <OpeningTextarea
@@ -121,6 +190,8 @@ export default function NewOpeningForm() {
                         name="extra"
                         value={openingData.extra}
                         onChange={handleChange}
+                        handleBlur={handleBlur}
+                        error={errors.extra}
                     />
 
                     <OpeningFormActions onClear={handleClear} onNext={handleNext} />

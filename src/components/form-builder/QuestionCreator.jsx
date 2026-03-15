@@ -3,10 +3,13 @@ import { Plus } from 'lucide-react';
 import QuestionTypeSelector from './QuestionTypeSelector';
 import QuestionUploadConfig from './QuestionUploadConfig';
 import QuestionOptionsEditor from './QuestionOptionsEditor';
+import { validateQuestion } from '../../lib/validateQuestions';
 import { useOpeningBuilder } from '../../hooks/useOpeningBuilderContext';
 
 export default function QuestionCreator() {
     const { setQuestions } = useOpeningBuilder();
+
+    const [error, setError] = useState(null);
 
     const [newField, setNewField] = useState({
         title: '',
@@ -17,7 +20,12 @@ export default function QuestionCreator() {
     });
 
     const addField = () => {
-        if (!newField.title.trim()) return;
+        const validationError = validateQuestion(newField);
+
+        if (validationError) {
+            setError(validationError);
+            return;
+        }
 
         setQuestions(prev => [
             ...prev,
@@ -35,6 +43,8 @@ export default function QuestionCreator() {
             options: [],
             config: { type: 'any' },
         });
+
+        setError(null);
     };
 
     return (
@@ -88,7 +98,7 @@ export default function QuestionCreator() {
                 }
             />
 
-            {newField.type === 'mcq' && (
+            {(newField.type === 'mcq' || newField.type === 'multi') && (
                 <QuestionOptionsEditor
                     options={newField.options}
                     setOptions={opts =>
@@ -111,6 +121,8 @@ export default function QuestionCreator() {
                     }
                 />
             )}
+
+            {error && <p className="text-red-400 text-xs mt-2">{error}</p>}
 
             <button
                 onClick={addField}

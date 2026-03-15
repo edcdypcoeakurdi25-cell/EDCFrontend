@@ -1,7 +1,7 @@
 import OpeningFormRow from './OpeningFormRow';
 import { LayoutTemplate, Eye, Target, ChevronDown } from 'lucide-react';
 
-export default function OpeningFormFields({ formData, handleChange, errors }) {
+export default function OpeningFormFields({ formData, handleChange, handleBlur, errors }) {
     return (
         <div className="mb-14">
             <OpeningFormRow icon={LayoutTemplate} label="Domain of the Opening">
@@ -10,8 +10,12 @@ export default function OpeningFormFields({ formData, handleChange, errors }) {
                     name="domain"
                     value={formData.domain}
                     onChange={handleChange}
-                    className={`w-full bg-zinc-800 border border-white/5 rounded-lg px-4 py-2.5 text-sm text-zinc-200, ${errors.domain ? 'border-red-500' : ''}`}
+                    onBlur={handleBlur}
+                    className={`w-full bg-zinc-800 border rounded-lg px-4 py-2.5 text-sm text-zinc-200
+                    ${errors.domain ? 'border-red-500' : 'border-white/5'}`}
                 />
+
+                {errors.domain && <p className="text-red-400 text-xs mt-1">{errors.domain}</p>}
             </OpeningFormRow>
 
             <OpeningFormRow icon={Eye} label="Choose Type of Work">
@@ -20,7 +24,9 @@ export default function OpeningFormFields({ formData, handleChange, errors }) {
                         name="workType"
                         value={formData.workType}
                         onChange={handleChange}
-                        className={`w-full bg-zinc-800 border border-white/5 rounded-lg px-4 py-2.5 text-sm text-zinc-300 appearance-none, ${errors.workType ? 'border-red-500' : ''}`}
+                        onBlur={handleBlur}
+                        className={`w-full bg-zinc-800 border rounded-lg px-4 py-2.5 text-sm text-zinc-300 appearance-none
+                        ${errors.workType ? 'border-red-500' : 'border-white/5'}`}
                     >
                         <option value="">Choose One</option>
                         <option value="Full-time">Full-time</option>
@@ -29,7 +35,11 @@ export default function OpeningFormFields({ formData, handleChange, errors }) {
                         <option value="Freelance">Freelance</option>
                     </select>
 
-                    <ChevronDown className="absolute right-3 top-1/2 -translate-y-1/2 w-4 h-4 text-zinc-500" />
+                    <ChevronDown className="absolute right-3 top-1/2 -translate-y-1/2 w-4 h-4 text-zinc-500 pointer-events-none" />
+
+                    {errors.workType && (
+                        <p className="text-red-400 text-xs mt-1">{errors.workType}</p>
+                    )}
                 </div>
             </OpeningFormRow>
 
@@ -39,8 +49,12 @@ export default function OpeningFormFields({ formData, handleChange, errors }) {
                     name="openings"
                     value={formData.openings}
                     onChange={handleChange}
-                    className={`w-full bg-zinc-800 border border-white/5 rounded-lg px-4 py-2.5 text-sm text-zinc-200 ${errors.openings ? 'border-red-500' : ''}`}
+                    onBlur={handleBlur}
+                    className={`w-full bg-zinc-800 border rounded-lg px-4 py-2.5 text-sm text-zinc-200
+                    ${errors.openings ? 'border-red-500' : 'border-white/5'}`}
                 />
+
+                {errors.openings && <p className="text-red-400 text-xs mt-1">{errors.openings}</p>}
             </OpeningFormRow>
         </div>
     );

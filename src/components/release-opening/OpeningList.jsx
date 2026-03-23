@@ -12,11 +12,11 @@ const container = {
     },
 };
 
-const OpeningList = ({ openings, onViewRole }) => {
+const OpeningList = ({ openings, onViewRole, onDeleteOpening }) => {
     return (
         <motion.div variants={container} initial="hidden" animate="show" className="space-y-4">
             {openings.map(opening => (
-                <OpeningCard key={opening.id} opening={opening} onViewRole={onViewRole} />
+                <OpeningCard key={opening.id} opening={opening} onViewRole={onViewRole} onDeleteOpening={onDeleteOpening} />
             ))}
         </motion.div>
     );

@@ -13,7 +13,7 @@ const item = {
     },
 };
 
-const OpeningCard = ({ opening, onViewRole }) => {
+const OpeningCard = ({ opening, onViewRole, onDeleteOpening }) => {
     return (
         <motion.div
             variants={item}
@@ -50,7 +50,12 @@ const OpeningCard = ({ opening, onViewRole }) => {
                     View Role
                 </button>
 
-                <button className="text-red-400 hover:text-red-300 font-medium">Delete</button>
+                <button 
+                    className="text-red-400 hover:text-red-300 font-medium"
+                    onClick={() => onDeleteOpening(opening.id)}
+                >
+                    Delete
+                </button>
             </div>
         </motion.div>
     );

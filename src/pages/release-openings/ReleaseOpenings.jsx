@@ -39,6 +39,28 @@ const ReleaseOpeningsPage = () => {
     const viewRole = (id) => navigate(`/role-analytics/${id}`);
     const createNewOpening = () => navigate('/create-opening');
 
+    const deleteOpening = async (id) => {
+        if (!window.confirm("Are you sure you want to delete this opening?")) return;
+        try {
+            const token = localStorage.getItem('token');
+            const res = await fetch(`${import.meta.env.VITE_API_URL}/openings/${id}`, {
+                method: 'DELETE',
+                headers: {
+                    'Authorization': `Bearer ${token}`
+                }
+            });
+            const data = await res.json();
+            if (data.success) {
+                setOpenings((prev) => prev.filter((o) => o.id !== id));
+            } else {
+                alert(data.message || "Failed to delete opening.");
+            }
+        } catch (err) {
+            console.error(err);
+            alert("An error occurred while deleting.");
+        }
+    };
+
     return (
         <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} className="w-full px-8">
             <div className="max-w-6xl mx-auto py-6">
@@ -73,7 +95,7 @@ const ReleaseOpeningsPage = () => {
                         ) : openings.length === 0 ? (
                             <EmptyState />
                         ) : (
-                            <OpeningList openings={openings} onViewRole={viewRole} />
+                            <OpeningList openings={openings} onViewRole={viewRole} onDeleteOpening={deleteOpening} />
                         )}
                     </div>
                 )}

@@ -75,7 +75,7 @@ export default function QuestionResponses({ question, applications = [] }) {
                             transition={{ delay: index * 0.05 }}
                             className="flex items-center justify-between rounded-xl bg-neutral-900 px-5 py-3"
                         >
-                            <span className="text-sm text-white">{item.value}</span>
+                            <span className="text-sm text-white">{item.label}</span>
                             <span className="text-sm text-neutral-400">{item.count} Responses</span>
                           </motion.div>
                       ))
